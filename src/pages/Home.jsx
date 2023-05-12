@@ -10,13 +10,17 @@ import { CommentsBlock } from '../components/CommentsBlock';
 export const Home = () => {
   return (
     <>
-      <Tabs style={{ marginBottom: 15 }} value={0} aria-label="basic tabs example">
+      <Tabs
+        style={{ marginBottom: 15 }}
+        value={0}
+        aria-label="basic tabs example"
+      >
         <Tab label="Новые" />
         <Tab label="Популярные" />
       </Tabs>
       <Grid container spacing={4}>
         <Grid xs={8} item>
-          {[...Array(5)].map(() => (
+          {[...Array(3)].map(() => (
             <Post
               id={1}
               title="Roast the code #1 | Rock Paper Scissors"
@@ -35,7 +39,10 @@ export const Home = () => {
           ))}
         </Grid>
         <Grid xs={4} item>
-          <TagsBlock items={['react', 'typescript', 'заметки']} isLoading={false} />
+          <TagsBlock
+            items={['react', 'typescript', 'заметки', 'хуетки']}
+            isLoading={false}
+          />
           <CommentsBlock
             items={[
               {

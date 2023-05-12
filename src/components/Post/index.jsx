@@ -54,7 +54,9 @@ export const Post = ({
       <div className={styles.wrapper}>
         <UserInfo {...user} additionalText={createdAt} />
         <div className={styles.indention}>
-          <h2 className={clsx(styles.title, { [styles.titleFull]: isFullPost })}>
+          <h2
+            className={clsx(styles.title, { [styles.titleFull]: isFullPost })}
+          >
             {isFullPost ? title : <a href={`/posts/${_id}`}>{title}</a>}
           </h2>
           <ul className={styles.tags}>

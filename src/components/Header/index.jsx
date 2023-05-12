@@ -14,7 +14,7 @@ export const Header = () => {
       <Container maxWidth="lg">
         <div className={styles.inner}>
           <a className={styles.logo} href="/">
-            <div>ARCHAKOV BLOG</div>
+            <div>BLOG SLAVAYNA</div>
           </a>
           <div className={styles.buttons}>
             {isAuth ? (
@@ -22,7 +22,11 @@ export const Header = () => {
                 <a href="/posts/create">
                   <Button variant="contained">Написать статью</Button>
                 </a>
-                <Button onClick={onClickLogout} variant="contained" color="error">
+                <Button
+                  onClick={onClickLogout}
+                  variant="contained"
+                  color="error"
+                >
                   Выйти
                 </Button>
               </>
