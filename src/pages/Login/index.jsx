@@ -32,7 +32,9 @@ export const Login = () => {
 
     if (!payload) {
       return alert('Не удалось авторизоваться');
-    } else {
+    }
+
+    if ('token' in payload) {
       window.localStorage.setItem('token', payload.token);
     }
   };
@@ -64,7 +66,13 @@ export const Login = () => {
           fullWidth
           {...register('password', { required: 'Укажите пароль' })}
         />
-        <Button type="submit" size="large" variant="contained" fullWidth>
+        <Button
+          type="submit"
+          disabled={!isValid}
+          size="large"
+          variant="contained"
+          fullWidth
+        >
           Войти
         </Button>
       </form>
