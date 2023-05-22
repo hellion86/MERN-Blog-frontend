@@ -10,12 +10,14 @@ import 'easymde/dist/easymde.min.css';
 
 import axios from '../../axios.js';
 import { selectIsAuth } from '../../redux/slices/auth';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate, Navigate, useParams } from 'react-router-dom';
+import { ConstructionOutlined } from '@mui/icons-material';
 
 export const AddPost = () => {
   const isAuth = useSelector(selectIsAuth);
-
+  const { id } = useParams();
   const navigate = useNavigate();
+  const isEditing = Boolean(id);
   const [imageUrl, setImageUrl] = React.useState('');
   const [isLoading, setLoading] = React.useState(false);
   const [text, setText] = React.useState('');
@@ -37,19 +39,36 @@ export const AddPost = () => {
     }
   };
 
+  React.useEffect(() => {
+    if (id) {
+      axios
+        .get(`/posts/${id}`)
+        .then(({ data }) => {
+          console.log(data);
+          setTitle(data.title);
+          setText(data.text);
+          setTags(data.tags);
+          setImageUrl(data.imageUrl);
+        })
+        .catch((error) => {
+          console.warn(error);
+          alert('Ошибка при редактировании статьи');
+        });
+    }
+  }, []);
+
   const handleSubmitPost = async () => {
     try {
       setLoading(true);
 
-      const { data } = await axios.post('/posts', {
-        title,
-        text,
-        tags: tags.split(','),
-        imageUrl,
-      });
-      console.log(data);
+      const fields = { title, text, tags: tags.split(','), imageUrl };
+      console.log(tags);
+      const { data } = isEditing
+        ? await axios.patch(`/posts/${id}`, fields)
+        : await axios.post('/posts', fields);
 
-      navigate(`/posts/${data._id}`);
+      const _id = isEditing ? id : data._id;
+      navigate(`/posts/${_id}`);
     } catch (error) {
       console.warn(error);
       alert('Не удалось опубликовать пост');
@@ -143,7 +162,7 @@ export const AddPost = () => {
       />
       <div className={styles.buttons}>
         <Button size="large" variant="contained" onClick={handleSubmitPost}>
-          Опубликовать
+          {isEditing ? 'Сохранить' : 'Опубликовать'}
         </Button>
         <a href="/">
           <Button size="large">Отмена</Button>
