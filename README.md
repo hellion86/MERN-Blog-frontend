@@ -1,13 +1,5 @@
-Front end part of MERN project by Archakov
+TODO:
 
-add popular/new
-sort from mongoose
+1. Страница сортировки по тэгам
 
-login form errors
-
-tags - сортировка по тегам
-
-комментарии
-отображение всех комментариев (последних 3)
-
-комментарии внутри каждой статьи
+2. Комментариии к статьям
