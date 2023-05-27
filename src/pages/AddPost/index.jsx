@@ -105,7 +105,7 @@ export const AddPost = () => {
   }
 
   return (
-    <Paper style={{ padding: 30 }}>
+    <Paper elevation={0} style={{ padding: 30 }}>
       <Button
         onClick={() => inputFileRef.current.click()}
         variant="outlined"
