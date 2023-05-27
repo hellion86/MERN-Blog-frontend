@@ -12,6 +12,7 @@ import { selectIsAuth, fetchRegister } from '../../redux/slices/auth.js';
 import styles from './Login.module.scss';
 
 export const Registration = () => {
+  // TODO add upload avatar field
   const dispatch = useDispatch();
   const isAuth = useSelector(selectIsAuth);
   const {

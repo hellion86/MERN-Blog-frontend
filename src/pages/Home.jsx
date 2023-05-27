@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Grid from '@mui/material/Grid';
@@ -7,32 +7,40 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Post } from '../components/Post';
 import { TagsBlock } from '../components/TagsBlock';
 import { CommentsBlock } from '../components/CommentsBlock';
-import { fetchPosts, fetchTags } from '../redux/slices/posts';
-
-// import axios from '../axios';
+import { fetchTags, fetchPostsByType } from '../redux/slices/posts';
 
 export const Home = () => {
   const dispatch = useDispatch();
+  const [currentTab, setTab] = useState('new');
   const { posts, tags } = useSelector((state) => state.posts);
   const userData = useSelector((state) => state.auth.data);
   const isPostsLoading = posts.status === 'loading';
   const isTagsLoading = tags.status === 'loading';
-  console.log(posts);
+
+  const handleTabs = () => {
+    if (currentTab === 'new') {
+      setTab('popular');
+      dispatch(fetchPostsByType('popular'));
+    } else {
+      setTab('new');
+      dispatch(fetchPostsByType('new'));
+    }
+  };
   React.useEffect(() => {
-    dispatch(fetchPosts());
+    dispatch(fetchPostsByType(currentTab));
     dispatch(fetchTags());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
       <Tabs
         style={{ marginBottom: 15 }}
-        value={0}
+        value={currentTab}
+        onChange={handleTabs}
         aria-label="basic tabs example"
       >
-        <Tab label="Новые" />
-        <Tab label="Популярные" />
+        <Tab value="new" label="Новые" />
+        <Tab value="popular" label="Популярные" />
       </Tabs>
       <Grid container spacing={4}>
         <Grid xs={8} item>
