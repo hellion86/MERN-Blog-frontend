@@ -19,7 +19,7 @@ export const Registration = () => {
     register,
     handleSubmit,
     setError,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm({
     defaultValues: {
       fullName: '',
@@ -31,10 +31,11 @@ export const Registration = () => {
 
   const onSubmit = async (values) => {
     const data = await dispatch(fetchRegister(values));
-    // TODO: сделать обработку ошибок через setError
 
-    if (!data.payload) {
-      return alert('Не удалось зарегистрироваться');
+    if (data.error) {
+      data.payload.forEach((element) => {
+        setError(element.path, { type: 'focus', message: element.msg });
+      });
     }
 
     if ('token' in data.payload) {
@@ -79,13 +80,7 @@ export const Registration = () => {
           helperText={errors.password?.message}
           {...register('password', { required: 'Укажите пароль' })}
         />
-        <Button
-          size="large"
-          // disabled={!isValid}
-          type="submit"
-          variant="contained"
-          fullWidth
-        >
+        <Button size="large" type="submit" variant="contained" fullWidth>
           Зарегистрироваться
         </Button>
       </form>

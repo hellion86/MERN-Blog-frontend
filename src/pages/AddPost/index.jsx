@@ -11,7 +11,7 @@ import 'easymde/dist/easymde.min.css';
 import axios from '../../axios.js';
 import { selectIsAuth } from '../../redux/slices/auth';
 import { useNavigate, Navigate, useParams } from 'react-router-dom';
-import { ConstructionOutlined } from '@mui/icons-material';
+// import { ConstructionOutlined } from '@mui/icons-material';
 
 export const AddPost = () => {
   const isAuth = useSelector(selectIsAuth);
@@ -55,6 +55,7 @@ export const AddPost = () => {
           alert('Ошибка при редактировании статьи');
         });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmitPost = async () => {
@@ -161,7 +162,12 @@ export const AddPost = () => {
         options={options}
       />
       <div className={styles.buttons}>
-        <Button size="large" variant="contained" onClick={handleSubmitPost}>
+        <Button
+          size="large"
+          variant="contained"
+          onClick={handleSubmitPost}
+          disabled={isLoading}
+        >
           {isEditing ? 'Сохранить' : 'Опубликовать'}
         </Button>
         <a href="/">

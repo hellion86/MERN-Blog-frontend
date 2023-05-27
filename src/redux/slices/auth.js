@@ -12,9 +12,13 @@ export const fetchAuth = createAsyncThunk(
 export const fetchRegister = createAsyncThunk(
   //TODO добавить обработку ошибок,  выводить ошибки в форме регистрации
   'auth/fetchRegister',
-  async (params) => {
-    const { data } = await axios.post('/auth/register', params);
-    return data;
+  async (params, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post('/auth/register', params);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
@@ -71,7 +75,6 @@ const authSlice = createSlice({
     },
     [fetchRegister.rejected]: (state) => {
       state.status = 'error';
-      state.data = null;
     },
   },
 });
