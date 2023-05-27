@@ -9,7 +9,6 @@ import { Navigate } from 'react-router-dom';
 
 import styles from './Login.module.scss';
 import { fetchAuth, selectIsAuth } from '../../redux/slices/auth';
-//TODO : change react-hook-form to Formik
 export const Login = () => {
   const dispatch = useDispatch();
   const isAuth = useSelector(selectIsAuth);
@@ -30,8 +29,8 @@ export const Login = () => {
   const onSubmit = async (values) => {
     const { payload } = await dispatch(fetchAuth(values));
 
-    if (!payload) {
-      return alert('Не удалось авторизоваться');
+    if (payload.message) {
+      setError('email', { type: 'focus', message: payload.message });
     }
 
     if ('token' in payload) {

@@ -2,15 +2,17 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../axios';
 
 export const fetchAuth = createAsyncThunk(
-  //TODO добавить обработку ошибок,  выводить ошибки в форме логина
   'auth/fethUserData',
-  async (params) => {
-    const { data } = await axios.post('/auth/login', params);
-    return data;
+  async (params, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post('/auth/login', params);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 export const fetchRegister = createAsyncThunk(
-  //TODO добавить обработку ошибок,  выводить ошибки в форме регистрации
   'auth/fetchRegister',
   async (params, { rejectWithValue }) => {
     try {
