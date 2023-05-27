@@ -54,15 +54,15 @@ const postsSlice = createSlice({
     },
     // Posts by type
     [fetchPostsByType.pending]: (state) => {
-      // state.posts.status = 'loading';
+      state.posts.status = 'loading';
     },
     [fetchPostsByType.fulfilled]: (state, action) => {
       state.posts.items = action.payload;
       state.posts.status = 'loaded';
     },
     [fetchPostsByType.rejected]: (state) => {
-      // state.posts.status = 'error';
-      // state.posts.items = [];
+      state.posts.status = 'error';
+      state.posts.items = [];
     },
     // Tags
     [fetchTags.pending]: (state) => {

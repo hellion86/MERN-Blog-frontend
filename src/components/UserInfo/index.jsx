@@ -4,7 +4,6 @@ import styles from './UserInfo.module.scss';
 import userAvatar from '../../assets/img/user-avatar.svg';
 
 export const UserInfo = ({ avatarUrl, fullName, additionalText }) => {
-  console.log(avatarUrl);
   const date = new Date(additionalText);
   return (
     <div className={styles.root}>
