@@ -44,7 +44,6 @@ export const AddPost = () => {
       axios
         .get(`/posts/${id}`)
         .then(({ data }) => {
-          console.log(data);
           setTitle(data.title);
           setText(data.text);
           setTags(data.tags);
@@ -57,21 +56,24 @@ export const AddPost = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  console.log(tags);
   const handleSubmitPost = async () => {
+    // TODO: img dont remove
+    // TODO: tags is string, transfer to backend string
+    // когда редактируем список тэгов он передается как строка, а приходит изначально как массив
+    // В БД необходимо теги хранить массивом и скать по запросу 1 тэг в массиве
     try {
       setLoading(true);
-
-      const fields = { title, text, tags: tags.split(','), imageUrl };
-      console.log(tags);
+      const fields = { title, text, tags, imageUrl };
+      console.log('new url is', imageUrl);
       const { data } = isEditing
         ? await axios.patch(`/posts/${id}`, fields)
         : await axios.post('/posts', fields);
-
       const _id = isEditing ? id : data._id;
       navigate(`/posts/${_id}`);
     } catch (error) {
-      console.warn(error);
+      console.log(error);
+      setLoading(false);
       alert('Не удалось опубликовать пост');
     }
   };
