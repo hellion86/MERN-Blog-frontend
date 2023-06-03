@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { useNavigate, Navigate, useParams } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
@@ -10,7 +11,6 @@ import 'easymde/dist/easymde.min.css';
 
 import axios from '../../axios.js';
 import { selectIsAuth } from '../../redux/slices/auth';
-import { useNavigate, Navigate, useParams } from 'react-router-dom';
 // import { ConstructionOutlined } from '@mui/icons-material';
 
 export const AddPost = () => {
@@ -18,11 +18,13 @@ export const AddPost = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const isEditing = Boolean(id);
-  const [imageUrl, setImageUrl] = React.useState('');
   const [isLoading, setLoading] = React.useState(false);
+  // TODO: add new slice ?
+  const [imageUrl, setImageUrl] = React.useState('');
   const [text, setText] = React.useState('');
   const [title, setTitle] = React.useState('');
   const [tags, setTags] = React.useState('');
+
   const inputFileRef = useRef(null);
 
   const handleChangeFile = async (event) => {
@@ -31,14 +33,12 @@ export const AddPost = () => {
       const file = event.target.files[0];
       formData.append('image', file);
       const { data } = await axios.post('/upload', formData);
-      console.log(data);
       setImageUrl(data.url);
     } catch (error) {
       console.warn(error);
       alert('Ошибка загрузки файла');
     }
   };
-
   React.useEffect(() => {
     if (id) {
       axios
@@ -46,7 +46,7 @@ export const AddPost = () => {
         .then(({ data }) => {
           setTitle(data.title);
           setText(data.text);
-          setTags(data.tags);
+          setTags(data.tags.join());
           setImageUrl(data.imageUrl);
         })
         .catch((error) => {
@@ -56,16 +56,11 @@ export const AddPost = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(tags);
+
   const handleSubmitPost = async () => {
-    // TODO: img dont remove
-    // TODO: tags is string, transfer to backend string
-    // когда редактируем список тэгов он передается как строка, а приходит изначально как массив
-    // В БД необходимо теги хранить массивом и скать по запросу 1 тэг в массиве
     try {
       setLoading(true);
       const fields = { title, text, tags, imageUrl };
-      console.log('new url is', imageUrl);
       const { data } = isEditing
         ? await axios.patch(`/posts/${id}`, fields)
         : await axios.post('/posts', fields);
