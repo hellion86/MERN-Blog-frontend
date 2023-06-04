@@ -8,14 +8,17 @@ import { Post } from '../components/Post';
 import { TagsBlock } from '../components/TagsBlock';
 import { CommentsBlock } from '../components/CommentsBlock';
 import { fetchTags, fetchPostsByType } from '../redux/slices/posts';
+import { fetchComments } from '../redux/slices/comments';
 
 export const Home = () => {
   const dispatch = useDispatch();
   const [currentTab, setTab] = useState('new');
   const { posts, tags } = useSelector((state) => state.posts);
+  const { comments } = useSelector((state) => state.comments);
   const userData = useSelector((state) => state.auth.data);
   const isPostsLoading = posts.status === 'loading';
   const isTagsLoading = tags.status === 'loading';
+  const isCommentsLoading = comments.status === 'loading';
 
   const handleTabs = () => {
     if (currentTab === 'new') {
@@ -29,8 +32,9 @@ export const Home = () => {
   React.useEffect(() => {
     dispatch(fetchPostsByType(currentTab));
     dispatch(fetchTags());
+    dispatch(fetchComments());
   }, []);
-
+  console.log(comments);
   return (
     <>
       <Tabs
@@ -69,23 +73,25 @@ export const Home = () => {
         <Grid xs={4} item>
           <TagsBlock items={tags.items} isLoading={isTagsLoading} />
           <CommentsBlock
-            items={[
-              {
-                user: {
-                  fullName: 'Вася Пупкин',
-                  avatarUrl: 'https://mui.com/static/images/avatar/1.jpg',
-                },
-                text: 'Это тестовый комментарий',
-              },
-              {
-                user: {
-                  fullName: 'Иван Иванов',
-                  avatarUrl: 'https://mui.com/static/images/avatar/2.jpg',
-                },
-                text: 'When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top',
-              },
-            ]}
-            isLoading={false}
+            items={comments.items}
+            isLoading={isCommentsLoading}
+            // items={[
+            //   {
+            //     user: {
+            //       fullName: 'Вася Пупкин',
+            //       avatarUrl: 'https://mui.com/static/images/avatar/1.jpg',
+            //     },
+            //     text: 'Это тестовый комментарий',
+            //   },
+            //   {
+            //     user: {
+            //       fullName: 'Иван Иванов',
+            //       avatarUrl: 'https://mui.com/static/images/avatar/2.jpg',
+            //     },
+            //     text: 'When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top',
+            //   },
+            // ]}
+            // isLoading={false}
           />
         </Grid>
       </Grid>
