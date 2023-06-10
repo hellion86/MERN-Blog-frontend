@@ -9,7 +9,9 @@ import axios from '../axios';
 export const FullPost = () => {
   const { id } = useParams();
   const [data, setData] = React.useState();
-  const [isLoading, setLoading] = React.useState(true);
+  const [comments, setComments] = React.useState([]);
+  const [isLoadingPosts, setLoading] = React.useState(true);
+  const [isLoadingComments, setLoadingComments] = React.useState(true);
   React.useEffect(() => {
     axios
       .get(`/posts/${id}`)
@@ -20,11 +22,21 @@ export const FullPost = () => {
       .catch((err) => {
         console.warn(err);
       });
+
+    axios
+      .get(`/comments/${id}`)
+      .then((res) => {
+        setComments(res.data);
+        setLoadingComments(false);
+      })
+      .catch((err) => {
+        console.warn(err);
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (isLoading) {
-    return <Post isLoading={isLoading} isFullPost />;
+  if (isLoadingPosts) {
+    return <Post isLoading={isLoadingPosts} isFullPost />;
   }
 
   return (
@@ -42,25 +54,7 @@ export const FullPost = () => {
       >
         <ReactMarkdown children={data.text} />
       </Post>
-      <CommentsBlock
-        items={[
-          {
-            user: {
-              fullName: 'Вася Пупкин',
-              avatarUrl: 'https://mui.com/static/images/avatar/1.jpg',
-            },
-            text: 'Это тестовый комментарий 555555',
-          },
-          {
-            user: {
-              fullName: 'Иван Иванов',
-              avatarUrl: 'https://mui.com/static/images/avatar/2.jpg',
-            },
-            text: 'When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top',
-          },
-        ]}
-        isLoading={false}
-      >
+      <CommentsBlock items={[...comments]} isLoading={isLoadingComments}>
         <Index />
       </CommentsBlock>
     </>

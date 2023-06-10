@@ -8,12 +8,23 @@ export const fetchComments = createAsyncThunk(
     return data;
   }
 );
+// export const fetchCommentsByPostId = createAsyncThunk(
+//   'comments/fetchCommentsByPostId',
+//   async (postId) => {
+//     const { data } = await axios.get(`/comments/${postId}`);
+//     return data;
+//   }
+// );
 
 const initialState = {
   comments: {
     items: [],
     status: 'loading',
   },
+  // commentsByPost: {
+  //   items: [],
+  //   status: 'loading',
+  // },
 };
 
 const commentsSlice = createSlice({
@@ -21,7 +32,7 @@ const commentsSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    // Posts
+    // Comments
     [fetchComments.pending]: (state) => {
       state.comments.status = 'loading';
     },
@@ -33,6 +44,18 @@ const commentsSlice = createSlice({
       state.comments.status = 'error';
       state.comments.items = [];
     },
+    // Fetch comment by post id
+    // [fetchCommentsByPostId.pending]: (state) => {
+    //   state.commentsByPost.status = 'loading';
+    // },
+    // [fetchCommentsByPostId.fulfilled]: (state, action) => {
+    //   state.commentsByPost.items = action.payload;
+    //   state.commentsByPost.status = 'loaded';
+    // },
+    // [fetchCommentsByPostId.rejected]: (state) => {
+    //   state.commentsByPost.status = 'error';
+    //   state.commentsByPost.items = [];
+    // },
   },
 });
 
