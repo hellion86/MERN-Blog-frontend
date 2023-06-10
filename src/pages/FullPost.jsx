@@ -12,6 +12,7 @@ export const FullPost = () => {
   const [comments, setComments] = React.useState([]);
   const [isLoadingPosts, setLoading] = React.useState(true);
   const [isLoadingComments, setLoadingComments] = React.useState(true);
+  // TODO get comment from slice, filter by post id and send to add comment component
   React.useEffect(() => {
     axios
       .get(`/posts/${id}`)
@@ -55,7 +56,7 @@ export const FullPost = () => {
         <ReactMarkdown children={data.text} />
       </Post>
       <CommentsBlock items={[...comments]} isLoading={isLoadingComments}>
-        <Index />
+        <Index postId={id} />
       </CommentsBlock>
     </>
   );

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../axios';
+import { act } from 'react-dom/test-utils';
 
 export const fetchComments = createAsyncThunk(
   'comments/fetchComments',
@@ -8,13 +9,16 @@ export const fetchComments = createAsyncThunk(
     return data;
   }
 );
-// export const fetchCommentsByPostId = createAsyncThunk(
-//   'comments/fetchCommentsByPostId',
-//   async (postId) => {
-//     const { data } = await axios.get(`/comments/${postId}`);
-//     return data;
-//   }
-// );
+export const createComment = createAsyncThunk(
+  'comments/createComment',
+  async (comment) => {
+    const { data } = await axios.post(`/comments`, comment);
+    console.log('I AM CREATE COMMENT');
+    console.log(data);
+
+    return data;
+  }
+);
 
 const initialState = {
   comments: {
@@ -44,18 +48,19 @@ const commentsSlice = createSlice({
       state.comments.status = 'error';
       state.comments.items = [];
     },
-    // Fetch comment by post id
-    // [fetchCommentsByPostId.pending]: (state) => {
-    //   state.commentsByPost.status = 'loading';
-    // },
-    // [fetchCommentsByPostId.fulfilled]: (state, action) => {
-    //   state.commentsByPost.items = action.payload;
-    //   state.commentsByPost.status = 'loaded';
-    // },
-    // [fetchCommentsByPostId.rejected]: (state) => {
-    //   state.commentsByPost.status = 'error';
-    //   state.commentsByPost.items = [];
-    // },
+    // add comment
+    [createComment.pending]: (state) => {
+      state.comments.status = 'loading';
+    },
+    [createComment.fulfilled]: (state, action) => {
+      console.log(action);
+      state.comments.items = [...state.comments.items, action.payload];
+      state.comments.status = 'loaded';
+    },
+    [createComment.rejected]: (state) => {
+      state.comments.status = 'error';
+      // state.comments.items = [];
+    },
   },
 });
 
