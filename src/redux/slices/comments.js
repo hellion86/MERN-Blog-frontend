@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../axios';
-import { act } from 'react-dom/test-utils';
 
 export const fetchComments = createAsyncThunk(
   'comments/fetchComments',
@@ -13,9 +12,6 @@ export const createComment = createAsyncThunk(
   'comments/createComment',
   async (comment) => {
     const { data } = await axios.post(`/comments`, comment);
-    console.log('I AM CREATE COMMENT');
-    console.log(data);
-
     return data;
   }
 );
@@ -59,7 +55,6 @@ const commentsSlice = createSlice({
     },
     [createComment.rejected]: (state) => {
       state.comments.status = 'error';
-      // state.comments.items = [];
     },
   },
 });

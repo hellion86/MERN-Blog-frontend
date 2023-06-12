@@ -62,7 +62,7 @@ export const Home = () => {
                 user={obj.user}
                 createdAt={obj.createdAt}
                 viewsCount={obj.viewsCount}
-                commentsCount={3}
+                commentsCount={obj.commentsCount}
                 tags={obj.tags}
                 isEditable={userData?._id === obj.user._id}
                 isLoading={isPostsLoading}

@@ -4,31 +4,26 @@ import { useParams } from 'react-router-dom';
 import { Post } from '../components/Post';
 import { Index } from '../components/AddComment';
 import { CommentsBlock } from '../components/CommentsBlock';
+import { useSelector } from 'react-redux';
+
 import axios from '../axios';
 
 export const FullPost = () => {
   const { id } = useParams();
   const [data, setData] = React.useState();
-  const [comments, setComments] = React.useState([]);
+  const { comments } = useSelector((state) => state.comments);
+  const isCommentsLoading = comments.status === 'loading';
+  const commentsByPostId = comments.items.filter(
+    (item) => item.post._id === id
+  );
   const [isLoadingPosts, setLoading] = React.useState(true);
-  const [isLoadingComments, setLoadingComments] = React.useState(true);
-  // TODO get comment from slice, filter by post id and send to add comment component
+  // TODO: dont load comments when hit F5
   React.useEffect(() => {
     axios
       .get(`/posts/${id}`)
       .then((res) => {
         setData(res.data);
         setLoading(false);
-      })
-      .catch((err) => {
-        console.warn(err);
-      });
-
-    axios
-      .get(`/comments/${id}`)
-      .then((res) => {
-        setComments(res.data);
-        setLoadingComments(false);
       })
       .catch((err) => {
         console.warn(err);
@@ -49,13 +44,13 @@ export const FullPost = () => {
         user={data.user}
         createdAt={data.createdAt}
         viewsCount={data.viewsCount}
-        commentsCount={3}
+        commentsCount={data.commentsCount}
         tags={data.tags}
         isFullPost
       >
         <ReactMarkdown children={data.text} />
       </Post>
-      <CommentsBlock items={[...comments]} isLoading={isLoadingComments}>
+      <CommentsBlock items={commentsByPostId} isLoading={isCommentsLoading}>
         <Index postId={id} />
       </CommentsBlock>
     </>
