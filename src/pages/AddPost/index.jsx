@@ -11,7 +11,6 @@ import 'easymde/dist/easymde.min.css';
 
 import axios from '../../axios.js';
 import { selectIsAuth } from '../../redux/slices/auth';
-// import { ConstructionOutlined } from '@mui/icons-material';
 
 export const AddPost = () => {
   const isAuth = useSelector(selectIsAuth);

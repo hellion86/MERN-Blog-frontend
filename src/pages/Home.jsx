@@ -1,32 +1,31 @@
-import React, { useState } from 'react';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Grid from '@mui/material/Grid';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from "react";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Grid from "@mui/material/Grid";
+import { useDispatch, useSelector } from "react-redux";
 
-import { Post } from '../components/Post';
-import { TagsBlock } from '../components/TagsBlock';
-import { CommentsBlock } from '../components/CommentsBlock';
-import { fetchTags, fetchPostsByType } from '../redux/slices/posts';
-import { fetchComments } from '../redux/slices/comments';
+import { Post } from "../components/Post";
+import { TagsBlock } from "../components/TagsBlock";
+import { CommentsBlock } from "../components/CommentsBlock";
+import { fetchTags, fetchPostsByType } from "../redux/slices/posts";
+import { fetchComments } from "../redux/slices/comments";
 
 export const Home = () => {
   const dispatch = useDispatch();
-  const [currentTab, setTab] = useState('new');
+  const [currentTab, setTab] = useState("new");
   const { posts, tags } = useSelector((state) => state.posts);
   const { comments } = useSelector((state) => state.comments);
   const userData = useSelector((state) => state.auth.data);
-  const isPostsLoading = posts.status === 'loading';
-  const isTagsLoading = tags.status === 'loading';
-  const isCommentsLoading = comments.status === 'loading';
-
+  const isPostsLoading = posts.status === "loading";
+  const isTagsLoading = tags.status === "loading";
+  const isCommentsLoading = comments.status === "loading";
   const handleTabs = () => {
-    if (currentTab === 'new') {
-      setTab('popular');
-      dispatch(fetchPostsByType('popular'));
+    if (currentTab === "new") {
+      setTab("popular");
+      dispatch(fetchPostsByType("popular"));
     } else {
-      setTab('new');
-      dispatch(fetchPostsByType('new'));
+      setTab("new");
+      dispatch(fetchPostsByType("new"));
     }
   };
   React.useEffect(() => {
@@ -57,7 +56,7 @@ export const Home = () => {
                 key={obj._id}
                 title={obj.title}
                 imageUrl={
-                  obj.imageUrl ? `http://localhost:4444${obj.imageUrl}` : ''
+                  obj.imageUrl ? `http://localhost:4444${obj.imageUrl}` : ""
                 }
                 user={obj.user}
                 createdAt={obj.createdAt}

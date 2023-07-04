@@ -1,15 +1,16 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from '../../axios';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "../../axios";
 
 export const fetchComments = createAsyncThunk(
-  'comments/fetchComments',
+  "comments/fetchComments",
   async () => {
-    const { data } = await axios.get('/comments');
+    const { data } = await axios.get("/comments");
     return data;
   }
 );
+// TODO: нужен ли этот код? Мы все равно заново фетчим комментарии из БД при создании
 export const createComment = createAsyncThunk(
-  'comments/createComment',
+  "comments/createComment",
   async (comment) => {
     const { data } = await axios.post(`/comments`, comment);
     return data;
@@ -19,42 +20,38 @@ export const createComment = createAsyncThunk(
 const initialState = {
   comments: {
     items: [],
-    status: 'loading',
+    status: "loading",
   },
-  // commentsByPost: {
-  //   items: [],
-  //   status: 'loading',
-  // },
 };
 
 const commentsSlice = createSlice({
-  name: 'comments',
+  name: "comments",
   initialState,
   reducers: {},
   extraReducers: {
     // Comments
     [fetchComments.pending]: (state) => {
-      state.comments.status = 'loading';
+      state.comments.status = "loading";
     },
     [fetchComments.fulfilled]: (state, action) => {
       state.comments.items = action.payload;
-      state.comments.status = 'loaded';
+      state.comments.status = "loaded";
     },
     [fetchComments.rejected]: (state) => {
-      state.comments.status = 'error';
+      state.comments.status = "error";
       state.comments.items = [];
     },
-    // add comment
+    // Add comment
     [createComment.pending]: (state) => {
-      state.comments.status = 'loading';
+      state.comments.status = "loading";
     },
     [createComment.fulfilled]: (state, action) => {
       console.log(action);
       state.comments.items = [...state.comments.items, action.payload];
-      state.comments.status = 'loaded';
+      state.comments.status = "loaded";
     },
     [createComment.rejected]: (state) => {
-      state.comments.status = 'error';
+      state.comments.status = "error";
     },
   },
 });
