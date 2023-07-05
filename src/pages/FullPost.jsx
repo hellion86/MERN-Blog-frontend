@@ -41,7 +41,9 @@ export const FullPost = () => {
         id={data._id}
         title={data.title}
         imageUrl={
-          data.imageUrl ? `${process.env.BACKEND_API}${data.imageUrl}` : ""
+          data.imageUrl
+            ? `${process.env.REACT_API_BACKEND_URL}${data.imageUrl}`
+            : ""
         }
         user={data.user}
         createdAt={data.createdAt}
