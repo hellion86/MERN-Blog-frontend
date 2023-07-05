@@ -1,14 +1,14 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
-import { useForm } from 'react-hook-form';
-import { Navigate } from 'react-router-dom';
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Paper from "@mui/material/Paper";
+import Button from "@mui/material/Button";
+import { useForm } from "react-hook-form";
+import { Navigate } from "react-router-dom";
 
-import styles from './Login.module.scss';
-import { fetchAuth, selectIsAuth } from '../../redux/slices/auth';
+import styles from "./Login.module.scss";
+import { fetchAuth, selectIsAuth } from "../../redux/slices/auth";
 export const Login = () => {
   const dispatch = useDispatch();
   const isAuth = useSelector(selectIsAuth);
@@ -20,21 +20,21 @@ export const Login = () => {
     formState: { errors, isValid },
   } = useForm({
     defaultValues: {
-      email: 'mail@mail.ru',
-      password: '12345',
+      email: "",
+      password: "",
     },
-    mode: 'onChange ',
+    mode: "onChange ",
   });
 
   const onSubmit = async (values) => {
     const { payload } = await dispatch(fetchAuth(values));
 
     if (payload.message) {
-      setError('email', { type: 'focus', message: payload.message });
+      setError("email", { type: "focus", message: payload.message });
     }
 
-    if ('token' in payload) {
-      window.localStorage.setItem('token', payload.token);
+    if ("token" in payload) {
+      window.localStorage.setItem("token", payload.token);
     }
   };
 
@@ -54,7 +54,7 @@ export const Login = () => {
           type="email"
           error={Boolean(errors.email?.message)}
           helperText={errors.email?.message}
-          {...register('email', { required: 'Укажите почту' })}
+          {...register("email", { required: "Укажите почту" })}
           fullWidth
         />
         <TextField
@@ -63,7 +63,7 @@ export const Login = () => {
           error={Boolean(errors.password?.message)}
           helperText={errors.password?.message}
           fullWidth
-          {...register('password', { required: 'Укажите пароль' })}
+          {...register("password", { required: "Укажите пароль" })}
         />
         <Button
           type="submit"

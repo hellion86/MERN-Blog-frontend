@@ -21,3 +21,4 @@ TODO:
 1. Add feature to download avatar for user
 2. Fix comment block length on main page
 3. Change modals from alert to some special
+4. Add Email confirmation
