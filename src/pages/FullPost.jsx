@@ -42,7 +42,7 @@ export const FullPost = () => {
         title={data.title}
         imageUrl={
           data.imageUrl
-            ? `${process.env.REACT_API_BACKEND_URL}${data.imageUrl}`
+            ? `${process.env.REACT_APP_API_BACKEND_URL}${data.imageUrl}`
             : ""
         }
         user={data.user}

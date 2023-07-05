@@ -48,7 +48,7 @@ export const Tags = () => {
                 title={obj.title}
                 imageUrl={
                   obj.imageUrl
-                    ? `${process.env.REACT_API_BACKEND_URL}${obj.imageUrl}`
+                    ? `${process.env.REACT_APP_API_BACKEND_URL}${obj.imageUrl}`
                     : ""
                 }
                 user={obj.user}
