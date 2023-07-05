@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import TextField from '@mui/material/TextField';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import TextField from "@mui/material/TextField";
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
 
-import { Post } from '../../components';
-import axios from '../../axios';
-import styles from './Tags.module.scss';
+import { Post } from "../../components";
+import axios from "../../axios";
+import styles from "./Tags.module.scss";
 
 export const Tags = () => {
   const { tagName } = useParams();
@@ -47,7 +47,9 @@ export const Tags = () => {
                 key={obj._id}
                 title={obj.title}
                 imageUrl={
-                  obj.imageUrl ? `http://localhost:4444${obj.imageUrl}` : ''
+                  obj.imageUrl
+                    ? `${process.env.BACKEND_API}${obj.imageUrl}`
+                    : ""
                 }
                 user={obj.user}
                 createdAt={obj.createdAt}

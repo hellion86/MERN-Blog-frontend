@@ -1,18 +1,18 @@
-import React from 'react';
-import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
-import { useParams } from 'react-router-dom';
-import { Post } from '../components/Post';
-import { Index } from '../components/AddComment';
-import { CommentsBlock } from '../components/CommentsBlock';
-import { useSelector } from 'react-redux';
+import React from "react";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import { useParams } from "react-router-dom";
+import { Post } from "../components/Post";
+import { Index } from "../components/AddComment";
+import { CommentsBlock } from "../components/CommentsBlock";
+import { useSelector } from "react-redux";
 
-import axios from '../axios';
+import axios from "../axios";
 
 export const FullPost = () => {
   const { id } = useParams();
   const [data, setData] = React.useState();
   const { comments } = useSelector((state) => state.comments);
-  const isCommentsLoading = comments.status === 'loading';
+  const isCommentsLoading = comments.status === "loading";
   const commentsByPostId = comments.items.filter(
     (item) => item.post._id === id
   );
@@ -40,7 +40,9 @@ export const FullPost = () => {
       <Post
         id={data._id}
         title={data.title}
-        imageUrl={data.imageUrl ? `http://localhost:4444${data.imageUrl}` : ''}
+        imageUrl={
+          data.imageUrl ? `${process.env.BACKEND_API}${data.imageUrl}` : ""
+        }
         user={data.user}
         createdAt={data.createdAt}
         viewsCount={data.viewsCount}
